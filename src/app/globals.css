@@ -2,25 +2,99 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0b1f33;
+
+  /* Brand palette — Vansh Packers and Movers */
+  --navy: #0b1f33;
+  --navy-light: #142c47;
+  --orange: #ff6b00;
+  --orange-light: #ffb300;
+  --gold: #ffb300;
+  --warm-box: #f5a623;
+  --slate: #64748b;
+  --border-subtle: #e5e7eb;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-orange: var(--orange);
+  --color-orange-light: var(--orange-light);
+  --color-gold: var(--gold);
+  --color-warm-box: var(--warm-box);
+  --color-slate: var(--slate);
+  --font-sans: var(--font-montserrat);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.container-max {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-pad {
+  padding-top: clamp(3.25rem, 7vw, 6.875rem);
+  padding-bottom: clamp(3.25rem, 7vw, 6.875rem);
+}
+
+.gradient-orange {
+  background-image: linear-gradient(135deg, #ff6b00, #ffb300);
+}
+
+.gradient-navy {
+  background-image: linear-gradient(135deg, #0b1f33, #142c47);
+}
+
+.text-gradient-orange {
+  background-image: linear-gradient(135deg, #ff6b00, #ffb300);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-scroll 30s linear infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+  }
 }
