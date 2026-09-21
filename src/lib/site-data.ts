@@ -23,7 +23,7 @@ export const siteConfig = {
   name: "Vansh Packers and Movers",
   shortName: "Vansh Packers",
   phone: "6361847700",
-  phoneDisplay: "6361847700",
+  phoneDisplay: "+91 6361847700",
   whatsapp: "916361847700",
   email: "info@vanshpackersmovers.com",
   address: "#42/1, Muneshwara Layout, Haralukunte, Bangalore – 560068",
@@ -276,6 +276,41 @@ export const areasServed = [
   "JP Nagar",
 ];
 
+// A representative subset of `areasServed`, each with real descriptive copy
+// rather than a bare label — used on the homepage for local-SEO content.
+export const neighborhoodHighlights = [
+  {
+    area: "Whitefield",
+    blurb:
+      "One of Bangalore's busiest tech corridors — frequent apartment and office relocation support for IT professionals and businesses.",
+  },
+  {
+    area: "Koramangala",
+    blurb:
+      "From compact 1 BHKs to independent homes, our household shifting team knows Koramangala's residential layouts well.",
+  },
+  {
+    area: "Indiranagar",
+    blurb:
+      "Quick, damage-free local moves for homes and boutique offices across Indiranagar's busy commercial streets.",
+  },
+  {
+    area: "Electronic City",
+    blurb:
+      "Corporate relocation support for IT parks and campuses, plus household shifting for the residential communities nearby.",
+  },
+  {
+    area: "HSR Layout",
+    blurb:
+      "Reliable local and domestic shifting services for one of Bangalore's most sought-after residential neighbourhoods.",
+  },
+  {
+    area: "Marathahalli",
+    blurb:
+      "Door-to-door household and office shifting for one of Bangalore's key residential and commercial junctions.",
+  },
+];
+
 export const whyChooseUs = [
   "Professional Packing",
   "Safe & Secure Handling",
@@ -439,7 +474,7 @@ export const faqs = [
   {
     question: "How can I get a moving quote?",
     answer:
-      "Simply fill out the quote form on this page or call us at 6361847700. Our team will get back to you with a transparent estimate.",
+      "Simply fill out the quote form on this page or call us at +91 6361847700. Our team will get back to you with a transparent estimate.",
   },
 ];
 

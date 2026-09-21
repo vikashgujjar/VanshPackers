@@ -3,6 +3,7 @@ import Stats from "@/components/Stats";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import LocationHighlight from "@/components/LocationHighlight";
+import LocalCoverage from "@/components/LocalCoverage";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Process from "@/components/Process";
 import TypographicBreak from "@/components/TypographicBreak";
@@ -23,6 +24,7 @@ export default function Home() {
       <About />
       <Services />
       <LocationHighlight />
+      <LocalCoverage />
       <WhyChooseUs />
       <Process />
       <TypographicBreak />

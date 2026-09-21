@@ -6,7 +6,7 @@ import FAQ from "@/components/FAQ";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Vansh Packers and Movers for a free moving quote. Call 6361847700 or fill out our quote form for household shifting, office relocation and vehicle transportation.",
+    "Get in touch with Vansh Packers and Movers for a free moving quote. Call +91 6361847700 or fill out our quote form for household shifting, office relocation and vehicle transportation.",
   alternates: { canonical: "/contact" },
 };
 
