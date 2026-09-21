@@ -1,10 +1,7 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { services, serviceIcons } from "@/lib/site-data";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { services, serviceIcons, type Service } from "@/lib/site-data";
 import Reveal from "./Reveal";
 
 // Real photography per known service title. Falls back to a neutral shot
@@ -77,149 +74,116 @@ export default function Services({ showHeading = true }: { showHeading?: boolean
           </Reveal>
         )}
 
-        <div className="relative mt-16">
-          {/* Center timeline, desktop only */}
-          <div
-            aria-hidden
-            className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-slate-200 md:block"
-          />
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service, i) => {
+            const Icon = serviceIcons[i % serviceIcons.length];
+            const photo = photos[service.title] ?? fallbackPhoto;
+            const { blurb, features } = meta[service.title] ?? fallbackMeta;
 
-          <div className="flex flex-col gap-16 md:gap-24">
-            {services.map((service, i) => {
-              const Icon = serviceIcons[i % serviceIcons.length];
-              const photo = photos[service.title] ?? fallbackPhoto;
-              const { blurb, features } = meta[service.title] ?? fallbackMeta;
-              const reversed = i % 2 === 1;
-
-              return (
-                <Reveal key={service.slug} delay={i * 40}>
-                  <div className="relative grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-16">
-                    {/* Timeline marker, centered on the line for every row regardless of side */}
-                    <span
-                      aria-hidden
-                      className="absolute left-1/2 top-1/2 z-10 hidden h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-white bg-navy text-[12px] font-extrabold text-white shadow-md md:flex"
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-
-                    {/* Photo — order flips on odd rows so it alternates sides */}
-                    <div className={reversed ? "md:order-2" : ""}>
-                      <ParallaxPhoto
-                        src={photo}
-                        alt={service.title}
-                        icon={Icon}
-                        speed={reversed ? -22 : 22}
-                      />
-                    </div>
-
-                    {/* Copy */}
-                    <div className={reversed ? "md:pl-2" : "md:pr-2"}>
-                      <span className="text-[12.5px] font-bold text-orange md:hidden">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <h3 className="mt-1 text-[22px] font-extrabold leading-tight tracking-tight text-navy md:text-[26px]">
-                        {service.title}
-                      </h3>
-                      <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-slate">
-                        {blurb}
-                      </p>
-                      <ul className="mt-5 flex flex-col gap-2.5">
-                        {features.map((f) => (
-                          <li key={f} className="flex items-center gap-2.5 text-[13.5px] text-navy/80">
-                            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange" />
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-                      <Link
-                        href={`/services/${service.slug}`}
-                        className="group mt-6 inline-flex items-center gap-2 text-[13.5px] font-semibold text-navy transition-colors hover:text-orange"
-                      >
-                        Explore this service
-                        <ArrowUpRight
-                          size={14}
-                          className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
+            return (
+              <Reveal key={service.slug} delay={i * 60}>
+                <FlipCard service={service} icon={Icon} index={i} photo={photo} blurb={blurb} features={features} />
+              </Reveal>
+            );
+          })}
         </div>
+
+        <Reveal delay={220} className="mt-12 text-center">
+          <Link
+            href="/services"
+            className="group inline-flex items-center gap-2 rounded-full border border-slate-200 px-6 py-3 text-[13.5px] font-semibold text-navy transition-colors hover:border-orange/40 hover:text-orange"
+          >
+            Explore all services
+            <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-/* ───────────────────── ParallaxPhoto ─────────────────────
-   Drifts the photo vertically as its row crosses the viewport, at a small
-   fraction of scroll speed. The image sits inside an overflow-hidden frame,
-   scaled up slightly so the drift never exposes an edge. Respects
-   prefers-reduced-motion by leaving the image static. */
-
-function ParallaxPhoto({
-  src,
-  alt,
+function FlipCard({
+  service,
   icon: Icon,
-  speed,
+  index,
+  photo,
+  blurb,
+  features,
 }: {
-  src: string;
-  alt: string;
+  service: Service;
   icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
-  speed: number;
+  index: number;
+  photo: string;
+  blurb: string;
+  features: string[];
 }) {
-  const frameRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
-
-    let raf = 0;
-    const update = () => {
-      const frame = frameRef.current;
-      const img = imgRef.current;
-      if (!frame || !img) return;
-      const rect = frame.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      // -0.5 (row above center) .. 0.5 (row below center) while roughly in view
-      const progress = (rect.top + rect.height / 2 - vh / 2) / vh;
-      const translate = progress * speed;
-      img.style.transform = `translate3d(0, ${translate}px, 0) scale(1.15)`;
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, [speed]);
-
   return (
-    <div
-      ref={frameRef}
-      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-[0_30px_60px_-24px_rgba(11,31,51,0.35)]"
-    >
-      <div
-        ref={imgRef}
-        className="absolute inset-0 will-change-transform"
-        style={{ transform: "scale(1.15)" }}
+    <div className="group h-[320px] w-full perspective-[1600px]">
+      <Link
+        href={`/services/${service.slug}`}
+        className="relative block h-full w-full transform-3d transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:group-hover:transform-none group-hover:transform-[rotateY(180deg)]"
       >
-        <Image src={src} alt={alt} fill loading="lazy" className="object-cover" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/0 to-navy/0" />
-      <span className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 text-orange shadow-md">
-        <Icon size={18} strokeWidth={1.9} />
-      </span>
+        {/* Front */}
+        <div className="absolute inset-0 flex flex-col justify-between overflow-hidden rounded-[22px] p-6 shadow-[0_24px_48px_-24px_rgba(11,31,51,0.4)] backface-hidden">
+          <Image
+            src={photo}
+            alt={service.title}
+            fill
+            loading="lazy"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/35 to-navy/10" />
+
+          <div className="relative flex items-start justify-between">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm">
+              <Icon size={20} strokeWidth={1.9} />
+            </span>
+            <span className="font-mono text-[12px] font-bold tracking-wider text-white/50">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
+
+          <h3 className="relative text-[19px] font-extrabold leading-tight text-white">
+            {service.title}
+          </h3>
+        </div>
+
+        {/* Back */}
+        <div className="absolute inset-0 flex flex-col overflow-hidden rounded-[22px] bg-navy p-6 shadow-[0_24px_48px_-24px_rgba(11,31,51,0.4)] backface-hidden transform-[rotateY(180deg)]">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.35]"
+            style={{
+              backgroundImage: "radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px)",
+              backgroundSize: "18px 18px",
+              maskImage: "radial-gradient(ellipse 80% 70% at 30% 20%, black 20%, transparent 75%)",
+            }}
+          />
+
+          <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-orange/15 text-orange">
+            <Icon size={18} strokeWidth={1.9} />
+          </span>
+          <h3 className="relative mt-3 text-[16px] font-bold leading-tight text-white">
+            {service.title}
+          </h3>
+          <p className="relative mt-2 text-[12.5px] leading-relaxed text-white/65">{blurb}</p>
+
+          <ul className="relative mt-3 flex flex-col gap-1.5">
+            {features.map((feature) => (
+              <li key={feature} className="flex items-start gap-2 text-[11.5px] text-white/75">
+                <Check size={12} className="mt-0.5 shrink-0 text-orange" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <span className="relative mt-auto flex items-center gap-1.5 pt-3 text-[12.5px] font-bold uppercase tracking-wide text-orange-light">
+            Explore service
+            <ArrowUpRight size={14} />
+          </span>
+        </div>
+      </Link>
     </div>
   );
 }

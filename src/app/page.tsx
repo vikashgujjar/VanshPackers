@@ -12,6 +12,7 @@ import FAQ from "@/components/FAQ";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Blog from "@/components/Blog";
+import RelatedSearches from "@/components/RelatedSearches";
 import CTA from "@/components/CTA";
 
 export default function Home() {
@@ -31,6 +32,7 @@ export default function Home() {
       <Testimonials />
       <Contact />
       <Blog />
+      <RelatedSearches />
       <CTA />
     </>
   );

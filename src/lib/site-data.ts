@@ -732,3 +732,30 @@ export const footerServiceLinks = services.map((s) => ({
   title: s.title,
   href: `/services/${s.slug}`,
 }));
+
+// Varied keyword phrasing across all six services, shown as a "related
+// searches" cloud on the homepage — deliberately uses synonyms (movers /
+// packers / shifting / relocation / transportation) rather than repeating
+// one exact phrase, and links back into the relevant service page.
+export const relatedSearches = [
+  { label: "Packers and Movers in Bangalore", href: "/services" },
+  { label: "Best Household Shifting Services", href: "/services/local-household-shifting" },
+  { label: "Local House Shifting Charges", href: "/services/local-household-shifting" },
+  { label: "Home Relocation Services", href: "/services/local-household-shifting" },
+  { label: "Domestic Relocation Services India", href: "/services/domestic-shifting-services" },
+  { label: "Interstate Packers and Movers", href: "/services/domestic-shifting-services" },
+  { label: "Long Distance Moving Company", href: "/services/domestic-shifting-services" },
+  { label: "Office Relocation Company Bangalore", href: "/services/corporate-relocation-services" },
+  { label: "Corporate Shifting Services", href: "/services/corporate-relocation-services" },
+  { label: "Business Move Planning", href: "/services/corporate-relocation-services" },
+  { label: "International Moving and Freight", href: "/services/international-transportation" },
+  { label: "Cross-Border Relocation Support", href: "/services/international-transportation" },
+  { label: "Car Transportation Services Bangalore", href: "/services/car-bike-transportation" },
+  { label: "Bike Transport on Carrier", href: "/services/car-bike-transportation" },
+  { label: "Vehicle Shifting Company", href: "/services/car-bike-transportation" },
+  { label: "Warehouse Storage Solutions", href: "/services/warehouse-service" },
+  { label: "Short-Term Goods Storage", href: "/services/warehouse-service" },
+  { label: "Affordable Movers and Packers", href: "/services" },
+  { label: "Packing and Moving Company", href: "/services" },
+  { label: "Door-to-Door Relocation Service", href: "/services" },
+];

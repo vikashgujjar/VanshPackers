@@ -23,8 +23,16 @@ const blocks = [
     body: "Moving to another city or state is a bigger undertaking, and we plan for it accordingly. Every interstate move gets a fixed delivery window, a GPS-tracked truck in transit and a single point of contact, so you always know where your shipment is and when it will arrive.",
   },
   {
+    heading: "International Relocation & Freight",
+    body: "Relocating abroad or shipping cargo internationally comes with its own checklist — customs documentation, secure crating and coordination with freight partners. Our international transportation service manages the process end to end, whether your shipment travels by sea or by air.",
+  },
+  {
     heading: "Insurance & Safety Assurance",
     body: "Every move — local or long-distance — is backed by transit insurance and handled by a background-verified crew. We use quality packing material rated for the item inside, from bubble wrap for electronics to wooden crating for artwork and fragile décor.",
+  },
+  {
+    heading: "Transparent Pricing & Free Quotes",
+    body: "No hidden charges, no last-minute add-ons. Share a few details about your move and we'll get back to you with a clear, itemised estimate — free of cost and with no obligation to book.",
   },
 ];
 
