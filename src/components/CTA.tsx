@@ -55,6 +55,7 @@ export default function CTA() {
             alt=""
             fill
             loading="lazy"
+            sizes="100vw"
             className="object-cover"
           />
         </div>

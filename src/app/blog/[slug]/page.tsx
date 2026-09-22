@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import CTA from "@/components/CTA";
+import JsonLd from "@/components/JsonLd";
+import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/schema";
 import { blogPosts } from "@/lib/site-data";
 
 export function generateStaticParams() {
@@ -23,6 +25,18 @@ export async function generateMetadata({
     title: post.title,
     description: post.excerpt,
     alternates: { canonical: `/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `/blog/${post.slug}`,
+      type: "article",
+      images: [{ url: post.image, alt: post.title }],
+    },
+    twitter: {
+      title: post.title,
+      description: post.excerpt,
+      images: [post.image],
+    },
   };
 }
 
@@ -37,8 +51,23 @@ export default async function BlogPostPage({
 
   const otherPosts = blogPosts.filter((p) => p.slug !== post.slug);
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: post.title, path: `/blog/${post.slug}` },
+  ]);
+
+  const articleSchema = buildArticleSchema({
+    headline: post.title,
+    description: post.excerpt,
+    image: post.image,
+    path: `/blog/${post.slug}`,
+  });
+
   return (
     <>
+      <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={articleSchema} />
       <PageHero
         eyebrow={post.category}
         title={post.title}
@@ -58,6 +87,7 @@ export default async function BlogPostPage({
                 alt={post.title}
                 fill
                 loading="lazy"
+                sizes="(max-width: 768px) 100vw, 768px"
                 className="object-cover"
               />
             </div>
@@ -109,6 +139,7 @@ export default async function BlogPostPage({
                     alt={p.title}
                     fill
                     loading="lazy"
+                    sizes="(max-width: 767px) 100vw, 360px"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>

@@ -97,4 +97,7 @@ html {
   .animate-fade-up {
     animation: none;
   }
+  .animate-marquee {
+    animation: none;
+  }
 }

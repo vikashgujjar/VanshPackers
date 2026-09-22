@@ -89,7 +89,14 @@ export default function ServiceSplitHero({
     <div className="lg:sticky lg:top-28 lg:h-[calc(100vh-7rem)] lg:w-[42%] lg:shrink-0 lg:self-start">
       {/* ───────────── Desktop: full-height photo, copy pinned to the bottom ───────────── */}
       <div className="relative hidden h-full overflow-hidden bg-navy lg:block">
-        <Image src={service.image} alt={service.title} fill priority className="object-cover" />
+        <Image
+          src={service.image}
+          alt={service.title}
+          fill
+          priority
+          sizes="(max-width: 1023px) 0px, 42vw"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/45 to-navy/10" />
 
         <div className="absolute inset-x-0 top-0 px-8 py-6">
@@ -104,7 +111,14 @@ export default function ServiceSplitHero({
       {/* ───────────── Mobile / tablet: compact banner, content flows below ───────────── */}
       <div className="relative overflow-hidden bg-navy lg:hidden">
         <div className="relative h-[260px] w-full">
-          <Image src={service.image} alt={service.title} fill priority className="object-cover" />
+          <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            priority
+            sizes="(max-width: 1023px) 100vw, 0px"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/25 to-navy/45" />
           <div className="absolute inset-x-0 top-0 px-5 py-5">
             <Breadcrumb title={service.title} />

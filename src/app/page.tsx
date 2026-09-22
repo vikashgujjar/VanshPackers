@@ -15,10 +15,15 @@ import Contact from "@/components/Contact";
 import Blog from "@/components/Blog";
 import RelatedSearches from "@/components/RelatedSearches";
 import CTA from "@/components/CTA";
+import JsonLd from "@/components/JsonLd";
+import { buildFaqSchema } from "@/lib/schema";
+import { faqs } from "@/lib/site-data";
 
 export default function Home() {
   return (
     <>
+      {/* Matches the real FAQ content rendered by <FAQ /> below */}
+      <JsonLd data={buildFaqSchema(faqs)} />
       <Hero />
       <Stats />
       <About />

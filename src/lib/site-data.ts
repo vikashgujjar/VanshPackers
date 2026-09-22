@@ -276,6 +276,139 @@ export const areasServed = [
   "JP Nagar",
 ];
 
+export type LocationPage = {
+  slug: string;
+  name: string;
+  // Used to vary the intro paragraph on each location's landing page and in
+  // the homepage marquee — keeps 12 near-identical templated pages from
+  // reading as pure duplicate content.
+  characteristic: string;
+  challenge: string;
+  // Which `services[].slug` best fits this area's character — used as a
+  // fallback image if `cityImage` is ever missing.
+  serviceSlug: string;
+  // A real Bangalore/Bengaluru photo (not a generic stock lifestyle shot),
+  // used for this location's hero and card imagery.
+  cityImage: string;
+};
+
+// Real Bangalore/Bengaluru photography (not generic stock lifestyle shots),
+// reused across the 12 locations below by character (landmark, skyline,
+// street life, residential township).
+const cityPhotos = {
+  vidhanaSoudha: "https://images.unsplash.com/photo-1697130383976-38f28c444292?q=80&w=1200&auto=format&fit=crop",
+  glassTower: "https://images.unsplash.com/photo-1636392881684-18362de8d08e?q=80&w=1200&auto=format&fit=crop",
+  greenSkyline: "https://images.unsplash.com/photo-1687158266872-fd2773fa76c6?q=80&w=1200&auto=format&fit=crop",
+  residentialTownship: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?q=80&w=1200&auto=format&fit=crop",
+  sunsetSkyline: "https://images.unsplash.com/photo-1627306036351-036986f292a9?q=80&w=1200&auto=format&fit=crop",
+  marketStreet: "https://images.unsplash.com/photo-1580060092295-dbe639fffda3?q=80&w=1200&auto=format&fit=crop",
+  towerSkyline: "https://images.unsplash.com/photo-1687158267365-3584c7966bc4?q=80&w=1200&auto=format&fit=crop",
+  autoRickshaw: "https://images.unsplash.com/photo-1564291886459-a39ad7415125?q=80&w=1200&auto=format&fit=crop",
+};
+
+// Drives both the homepage's "Our Services in {city}" marquee and the
+// dedicated /packers-and-movers-in-{area} landing pages. The slug is the
+// full keyword phrase (not just the area) since these pages live at the
+// site root, e.g. /packers-and-movers-in-electronic-city.
+export const locationPages: LocationPage[] = [
+  {
+    slug: "packers-and-movers-in-mg-road",
+    name: "MG Road",
+    characteristic: "Bangalore's central business district",
+    challenge: "heavy traffic, one-way roads and limited parking near commercial complexes",
+    serviceSlug: "corporate-relocation-services",
+    cityImage: cityPhotos.vidhanaSoudha,
+  },
+  {
+    slug: "packers-and-movers-in-electronic-city",
+    name: "Electronic City",
+    characteristic: "one of Bangalore's largest IT hubs",
+    challenge: "narrow lanes, heavy traffic and tightly scheduled office campuses",
+    serviceSlug: "corporate-relocation-services",
+    cityImage: cityPhotos.glassTower,
+  },
+  {
+    slug: "packers-and-movers-in-marathahalli",
+    name: "Marathahalli",
+    characteristic: "a major residential and IT junction",
+    challenge: "congested, signal-heavy roads connecting to the Outer Ring Road",
+    serviceSlug: "local-household-shifting",
+    cityImage: cityPhotos.greenSkyline,
+  },
+  {
+    slug: "packers-and-movers-in-whitefield",
+    name: "Whitefield",
+    characteristic: "one of Bangalore's fastest-growing tech corridors",
+    challenge: "large gated communities and frequent apartment-to-apartment moves",
+    serviceSlug: "local-household-shifting",
+    cityImage: cityPhotos.residentialTownship,
+  },
+  {
+    slug: "packers-and-movers-in-jp-nagar",
+    name: "JP Nagar",
+    characteristic: "a well-established residential neighbourhood",
+    challenge: "narrow interior roads and multi-storey apartment complexes",
+    serviceSlug: "local-household-shifting",
+    cityImage: cityPhotos.sunsetSkyline,
+  },
+  {
+    slug: "packers-and-movers-in-btm-layout",
+    name: "BTM Layout",
+    characteristic: "a densely packed residential and commercial locality",
+    challenge: "tight lanes and limited loading space outside apartments",
+    serviceSlug: "local-household-shifting",
+    cityImage: cityPhotos.marketStreet,
+  },
+  {
+    slug: "packers-and-movers-in-hebbal",
+    name: "Hebbal",
+    characteristic: "a fast-developing area near the airport road",
+    challenge: "ongoing infrastructure work and heavy flyover traffic",
+    serviceSlug: "international-transportation",
+    cityImage: cityPhotos.towerSkyline,
+  },
+  {
+    slug: "packers-and-movers-in-kr-puram",
+    name: "KR Puram",
+    characteristic: "a key railway and transit junction",
+    challenge: "busy junctions and mixed residential-industrial traffic",
+    serviceSlug: "domestic-shifting-services",
+    cityImage: cityPhotos.autoRickshaw,
+  },
+  {
+    slug: "packers-and-movers-in-indiranagar",
+    name: "Indiranagar",
+    characteristic: "one of Bangalore's busiest commercial streets",
+    challenge: "narrow service roads and limited daytime loading access",
+    serviceSlug: "corporate-relocation-services",
+    cityImage: cityPhotos.marketStreet,
+  },
+  {
+    slug: "packers-and-movers-in-cox-town",
+    name: "Cox Town",
+    characteristic: "a quieter, older residential pocket close to the city centre",
+    challenge: "narrow heritage-era streets and tight turning space",
+    serviceSlug: "local-household-shifting",
+    cityImage: cityPhotos.sunsetSkyline,
+  },
+  {
+    slug: "packers-and-movers-in-hsr-layout",
+    name: "HSR Layout",
+    characteristic: "one of Bangalore's most sought-after residential sectors",
+    challenge: "sector-wise layouts and high apartment density",
+    serviceSlug: "local-household-shifting",
+    cityImage: cityPhotos.residentialTownship,
+  },
+  {
+    slug: "packers-and-movers-in-sarjapur-road",
+    name: "Sarjapur Road",
+    characteristic: "a rapidly expanding IT and residential corridor",
+    challenge: "ongoing road-widening work and long commute stretches",
+    serviceSlug: "car-bike-transportation",
+    cityImage: cityPhotos.greenSkyline,
+  },
+];
+
 // A representative subset of `areasServed`, each with real descriptive copy
 // rather than a bare label — used on the homepage for local-SEO content.
 export const neighborhoodHighlights = [
@@ -767,30 +900,3 @@ export const footerServiceLinks = services.map((s) => ({
   title: s.title,
   href: `/services/${s.slug}`,
 }));
-
-// Varied keyword phrasing across all six services, shown as a "related
-// searches" cloud on the homepage — deliberately uses synonyms (movers /
-// packers / shifting / relocation / transportation) rather than repeating
-// one exact phrase, and links back into the relevant service page.
-export const relatedSearches = [
-  { label: "Packers and Movers in Bangalore", href: "/services" },
-  { label: "Best Household Shifting Services", href: "/services/local-household-shifting" },
-  { label: "Local House Shifting Charges", href: "/services/local-household-shifting" },
-  { label: "Home Relocation Services", href: "/services/local-household-shifting" },
-  { label: "Domestic Relocation Services India", href: "/services/domestic-shifting-services" },
-  { label: "Interstate Packers and Movers", href: "/services/domestic-shifting-services" },
-  { label: "Long Distance Moving Company", href: "/services/domestic-shifting-services" },
-  { label: "Office Relocation Company Bangalore", href: "/services/corporate-relocation-services" },
-  { label: "Corporate Shifting Services", href: "/services/corporate-relocation-services" },
-  { label: "Business Move Planning", href: "/services/corporate-relocation-services" },
-  { label: "International Moving and Freight", href: "/services/international-transportation" },
-  { label: "Cross-Border Relocation Support", href: "/services/international-transportation" },
-  { label: "Car Transportation Services Bangalore", href: "/services/car-bike-transportation" },
-  { label: "Bike Transport on Carrier", href: "/services/car-bike-transportation" },
-  { label: "Vehicle Shifting Company", href: "/services/car-bike-transportation" },
-  { label: "Warehouse Storage Solutions", href: "/services/warehouse-service" },
-  { label: "Short-Term Goods Storage", href: "/services/warehouse-service" },
-  { label: "Affordable Movers and Packers", href: "/services" },
-  { label: "Packing and Moving Company", href: "/services" },
-  { label: "Door-to-Door Relocation Service", href: "/services" },
-];

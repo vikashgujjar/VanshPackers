@@ -32,6 +32,7 @@ export default function About({
                 alt="Professional movers packing household items securely"
                 fill
                 loading="lazy"
+                sizes="(max-width: 1024px) 100vw, 45vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/0 to-navy/0" />

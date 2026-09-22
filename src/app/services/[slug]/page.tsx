@@ -7,6 +7,8 @@ import ServiceQuoteForm from "@/components/ServiceQuoteForm";
 import ServiceFaqAccordion from "@/components/ServiceFaqAccordion";
 import CTA from "@/components/CTA";
 import Reveal from "@/components/Reveal";
+import JsonLd from "@/components/JsonLd";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "@/lib/schema";
 import {
   services,
   serviceIcons,
@@ -32,6 +34,18 @@ export async function generateMetadata({
     title: service.title,
     description: service.description,
     alternates: { canonical: `/services/${service.slug}` },
+    openGraph: {
+      title: service.title,
+      description: service.description,
+      url: `/services/${service.slug}`,
+      type: "website",
+      images: [{ url: service.image, alt: service.title }],
+    },
+    twitter: {
+      title: service.title,
+      description: service.description,
+      images: [service.image],
+    },
   };
 }
 
@@ -49,43 +63,24 @@ export default async function ServiceDetailPage({
   const otherServices = services.filter((s) => s.slug !== service.slug);
   const faqs = serviceFaqs[service.slug] ?? [];
 
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: service.title, path: `/services/${service.slug}` },
+  ]);
+
+  const serviceSchema = buildServiceSchema({
     name: service.title,
     description: service.description,
-    provider: {
-      "@type": "MovingCompany",
-      name: siteConfig.name,
-      telephone: `+91${siteConfig.phone}`,
-      url: siteConfig.url,
-    },
-    areaServed: siteConfig.city,
-    url: `${siteConfig.url}/services/${service.slug}`,
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: { "@type": "Answer", text: faq.answer },
-    })),
-  };
+    path: `/services/${service.slug}`,
+    areaServed: `${siteConfig.city}, India`,
+  });
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
-      {faqs.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
+      <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={serviceSchema} />
+      {faqs.length > 0 && <JsonLd data={buildFaqSchema(faqs)} />}
 
       <div className="flex flex-col lg:flex-row lg:items-start">
         <ServiceSplitHero service={service} icon={Icon} index={index} total={services.length} />

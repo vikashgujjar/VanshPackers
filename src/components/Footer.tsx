@@ -131,9 +131,9 @@ export default function Footer() {
                 <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-orange">
                   <MapPin size={14} />
                 </span>
-                <span className="pt-1 text-[13.5px] font-medium leading-snug">
+                <address className="pt-1 text-[13.5px] font-medium not-italic leading-snug">
                   {siteConfig.address}
-                </span>
+                </address>
               </li>
               <li className="flex items-center gap-3">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-orange">
