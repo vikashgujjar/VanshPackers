@@ -51,7 +51,7 @@ export default function CTA() {
       <div aria-hidden className="absolute inset-0">
         <div className="cta-bg-zoom absolute inset-0" style={{ animation: "cta-bg-zoom 20s ease-in-out infinite alternate" }}>
           <Image
-            src="https://images.unsplash.com/photo-1600518464441-9154a4dea21b?q=80&w=1920&auto=format&fit=crop"
+            src="/mainBanner.webp"
             alt=""
             fill
             loading="lazy"

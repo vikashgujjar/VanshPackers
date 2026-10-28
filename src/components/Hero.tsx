@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
   CalendarDays,
-  Check,
   ChevronDown,
   MapPin,
   Phone,
@@ -17,6 +17,7 @@ import {
   User,
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-data";
+import { submitLead } from "@/lib/submitLead";
 
 const moveTypes = [
   "Local Household Shifting",
@@ -35,8 +36,9 @@ const trustIndicators = [
 const ROUTE = "M 30 250 C 120 250, 150 80, 260 80 S 400 220, 500 50";
 
 export default function Hero() {
-  const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
   const [moveType, setMoveType] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <section
@@ -80,8 +82,8 @@ export default function Hero() {
       {/* ───────── Background ───────── */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1600518464441-9154a4dea21b?q=80&w=1920&auto=format&fit=crop"
-          alt="Moving truck loaded for professional relocation service"
+          src="/mainBanner.webp"
+          alt="Moving truck on the highway for a professional relocation"
           fill
           priority
           sizes="100vw"
@@ -231,36 +233,35 @@ export default function Hero() {
                   </span>
                 </div>
 
-                {submitted ? (
-                  <div className="px-6 py-10 text-center">
-                    <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-orange/10 text-orange">
-                      <Check size={26} strokeWidth={2.5} />
-                    </span>
-                    <p className="mt-5 text-[17px] font-bold tracking-tight">Request received</p>
-                    <p className="mx-auto mt-2 max-w-[28ch] text-[13.5px] leading-relaxed text-navy/60">
-                      We have your details. A move planner will call you shortly to confirm the route and date.
-                    </p>
-                    <a
-                      href={`tel:${siteConfig.phone}`}
-                      className="mt-6 inline-flex items-center gap-2 text-[13.5px] font-semibold text-orange hover:text-navy"
-                    >
-                      <Phone size={14} /> In a hurry? Call {siteConfig.phoneDisplay}
-                    </a>
-                  </div>
-                ) : (
-                  <form
-                    className="px-6 py-5"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      setSubmitted(true);
-                    }}
-                  >
+                <form
+                  className="px-6 py-5"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    setLoading(true);
+
+                    const formData = new FormData(e.currentTarget);
+                    const data = Object.fromEntries(formData.entries());
+
+                    const ok = await submitLead({
+                      name: data.name as string,
+                      phone: data.phone as string,
+                      serviceType: data.moveType as string,
+                      message: `Moving From: ${data.fromCity}\nMoving To: ${data.toCity}`,
+                    });
+
+                    if (ok) {
+                      router.push("/thank-you");
+                      return;
+                    }
+                    setLoading(false);
+                  }}
+                >
                     <div className="grid gap-3 sm:grid-cols-2">
                       <Field icon={User} label="Your name">
-                        <input required type="text" placeholder="Full name" className={inputCls} />
+                        <input required name="name" type="text" placeholder="Full name" className={inputCls} />
                       </Field>
                       <Field icon={Phone} label="Phone">
-                        <input required type="tel" placeholder="+91" className={inputCls} />
+                        <input required name="phone" type="tel" placeholder="+91" className={inputCls} />
                       </Field>
                     </div>
 
@@ -274,10 +275,10 @@ export default function Hero() {
                         label="Moving from"
                         leading={<span className="h-2.5 w-2.5 rounded-full bg-orange" />}
                       >
-                        <input required type="text" placeholder="City or area" className={inputCls} />
+                        <input required name="fromCity" type="text" placeholder="City or area" className={inputCls} />
                       </Field>
                       <Field icon={MapPin} label="Moving to">
-                        <input required type="text" placeholder="City or area" className={inputCls} />
+                        <input required name="toCity" type="text" placeholder="City or area" className={inputCls} />
                       </Field>
                     </div>
 
@@ -286,6 +287,7 @@ export default function Hero() {
                         <span className="relative block">
                           <select
                             required
+                            name="moveType"
                             value={moveType}
                             onChange={(e) => setMoveType(e.target.value)}
                             className={`${inputCls} appearance-none pr-6 ${moveType ? "" : "text-navy/35 font-medium"}`}
@@ -310,17 +312,19 @@ export default function Hero() {
                     <div className="mt-5 border-t border-dashed border-slate-200 pt-4">
                       <button
                         type="submit"
-                        className="group flex w-full items-center justify-center gap-2 rounded-xl gradient-orange py-3.5 text-[14.5px] font-semibold text-white shadow-[0_14px_30px_-10px_rgba(255,107,0,0.7)] transition-transform hover:-translate-y-0.5"
+                        disabled={loading}
+                        className="group flex w-full items-center justify-center gap-2 rounded-xl gradient-orange py-3.5 text-[14.5px] font-semibold text-white shadow-[0_14px_30px_-10px_rgba(255,107,0,0.7)] transition-transform hover:-translate-y-0.5 disabled:opacity-60"
                       >
-                        Get my free estimate
-                        <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        {loading ? "Sending..." : "Get my free estimate"}
+                        {!loading && (
+                          <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        )}
                       </button>
                       <p className="mt-3 text-center text-[11.5px] text-navy/50">
                         No obligation. We never share your number.
                       </p>
                     </div>
                   </form>
-                )}
               </div>
             </div>
           </div>

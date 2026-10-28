@@ -1,8 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, ArrowUpRight, Check, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { siteConfig } from "@/lib/site-data";
+import { submitLead } from "@/lib/submitLead";
 import Reveal from "./Reveal";
 
 const services = [
@@ -15,7 +17,8 @@ const services = [
 ];
 
 export default function Contact({ showHeading = true }: { showHeading?: boolean }) {
-  const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const tiles = [
     {
@@ -122,30 +125,27 @@ export default function Contact({ showHeading = true }: { showHeading?: boolean 
 
             {/* ───────────── Right: form ───────────── */}
             <div className="px-6 py-8 sm:px-9 sm:py-10">
-              {submitted ? (
-                <div className="flex h-full flex-col items-center justify-center py-10 text-center">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-orange/10 text-orange">
-                    <Check size={26} strokeWidth={2.5} />
-                  </span>
-                  <p className="mt-5 text-[17px] font-bold tracking-tight text-navy">
-                    Request received
-                  </p>
-                  <p className="mx-auto mt-2 max-w-[30ch] text-[13.5px] leading-relaxed text-navy/60">
-                    Thank you for reaching out. Our team will contact you shortly with a free
-                    quote.
-                  </p>
-                  <a
-                    href={`tel:${siteConfig.phone}`}
-                    className="mt-6 inline-flex items-center gap-2 text-[13.5px] font-semibold text-orange hover:text-navy"
-                  >
-                    <Phone size={14} /> In a hurry? Call {siteConfig.phoneDisplay}
-                  </a>
-                </div>
-              ) : (
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
-                    setSubmitted(true);
+                    setLoading(true);
+
+                    const formData = new FormData(e.currentTarget);
+                    const data = Object.fromEntries(formData.entries());
+
+                    const ok = await submitLead({
+                      name: data.name as string,
+                      phone: data.phone as string,
+                      email: data.email as string,
+                      serviceType: data.service as string,
+                      message: `Moving From: ${data.fromCity}\nMoving To: ${data.toCity}\nAdditional Details: ${data.message || "N/A"}`,
+                    });
+
+                    if (ok) {
+                      router.push("/thank-you");
+                      return;
+                    }
+                    setLoading(false);
                   }}
                 >
                   <p className="text-[15px] font-bold tracking-tight text-navy">
@@ -157,22 +157,22 @@ export default function Contact({ showHeading = true }: { showHeading?: boolean 
 
                   <div className="mt-5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                     <Field label="Full name">
-                      <input required type="text" placeholder="Your name" className={inputCls} />
+                      <input required name="name" type="text" placeholder="Your name" className={inputCls} />
                     </Field>
                     <Field label="Phone">
-                      <input required type="tel" placeholder="+91" className={inputCls} />
+                      <input required name="phone" type="tel" placeholder="+91" className={inputCls} />
                     </Field>
                     <Field label="Email" full>
-                      <input required type="email" placeholder="you@example.com" className={inputCls} />
+                      <input required name="email" type="email" placeholder="you@example.com" className={inputCls} />
                     </Field>
                     <Field label="Moving from">
-                      <input required type="text" placeholder="City or area" className={inputCls} />
+                      <input required name="fromCity" type="text" placeholder="City or area" className={inputCls} />
                     </Field>
                     <Field label="Moving to">
-                      <input required type="text" placeholder="City or area" className={inputCls} />
+                      <input required name="toCity" type="text" placeholder="City or area" className={inputCls} />
                     </Field>
                     <Field label="Service required" full>
-                      <select required defaultValue="" className={`${inputCls} appearance-none`}>
+                      <select required name="service" defaultValue="" className={`${inputCls} appearance-none`}>
                         <option value="" disabled>
                           Select a service
                         </option>
@@ -186,6 +186,7 @@ export default function Contact({ showHeading = true }: { showHeading?: boolean 
                     <Field label="Message (optional)" full>
                       <textarea
                         rows={3}
+                        name="message"
                         placeholder="Tell us a bit more about your move"
                         className={`${inputCls} resize-none`}
                       />
@@ -194,19 +195,21 @@ export default function Contact({ showHeading = true }: { showHeading?: boolean 
 
                   <button
                     type="submit"
-                    className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full gradient-orange py-3.5 text-[14.5px] font-semibold text-white shadow-[0_14px_28px_-10px_rgba(255,107,0,0.6)] transition-transform hover:-translate-y-0.5"
+                    disabled={loading}
+                    className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full gradient-orange py-3.5 text-[14.5px] font-semibold text-white shadow-[0_14px_28px_-10px_rgba(255,107,0,0.6)] transition-transform hover:-translate-y-0.5 disabled:opacity-60"
                   >
-                    Request free quote
-                    <ArrowRight
-                      size={16}
-                      className="transition-transform duration-300 group-hover:translate-x-1"
-                    />
+                    {loading ? "Sending..." : "Request free quote"}
+                    {!loading && (
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    )}
                   </button>
                   <p className="mt-3 text-center text-[11.5px] text-navy/50">
                     No obligation. We never share your number.
                   </p>
                 </form>
-              )}
             </div>
           </div>
         </Reveal>

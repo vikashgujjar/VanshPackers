@@ -4,25 +4,6 @@ import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import { services, serviceIcons, type Service } from "@/lib/site-data";
 import Reveal from "./Reveal";
 
-// Real photography per known service title. Falls back to a neutral shot
-// (reused from the About section) so the layout never breaks on new data.
-const photos: Record<string, string> = {
-  "Local Household Shifting":
-    "https://images.unsplash.com/photo-1730154838368-c37b1fdebcf6?q=80&w=1200&auto=format&fit=crop",
-  "Domestic Shifting Services":
-    "https://images.unsplash.com/photo-1698917414969-feade59e3343?q=80&w=1200&auto=format&fit=crop",
-  "Corporate Relocation Services":
-    "https://images.unsplash.com/photo-1600725935160-f67ee4f6084a?q=80&w=1200&auto=format&fit=crop",
-  "International Transportation":
-    "https://images.unsplash.com/photo-1605732562742-3023a888e56e?q=80&w=1200&auto=format&fit=crop",
-  "Car & Bike Transportation":
-    "https://images.unsplash.com/photo-1522674149721-b0191358dc5c?q=80&w=1200&auto=format&fit=crop",
-  "Warehouse Services":
-    "https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=1200&auto=format&fit=crop",
-};
-const fallbackPhoto =
-  "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1200&auto=format&fit=crop";
-
 const meta: Record<string, { blurb: string; features: string[] }> = {
   "Local Household Shifting": {
     blurb: "Room-by-room packing and same-city delivery, usually done in a single day.",
@@ -77,12 +58,11 @@ export default function Services({ showHeading = true }: { showHeading?: boolean
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, i) => {
             const Icon = serviceIcons[i % serviceIcons.length];
-            const photo = photos[service.title] ?? fallbackPhoto;
             const { blurb, features } = meta[service.title] ?? fallbackMeta;
 
             return (
               <Reveal key={service.slug} delay={i * 60}>
-                <FlipCard service={service} icon={Icon} index={i} photo={photo} blurb={blurb} features={features} />
+                <FlipCard service={service} icon={Icon} index={i} photo={service.image} blurb={blurb} features={features} />
               </Reveal>
             );
           })}

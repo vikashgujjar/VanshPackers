@@ -66,8 +66,7 @@ export const services: Service[] = [
     description:
       "Safe, efficient packing and moving of household goods within the city with trained staff and proper equipment.",
     externalUrl: "https://anshpackersmovers.com/local-household-shifting/",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop",
+    image: "/localHouseHoldShifting.webp",
     features: [
       "Door-to-door packing and moving within the city",
       "Quality packing materials for furniture and appliances",
@@ -87,8 +86,7 @@ export const services: Service[] = [
     description:
       "End-to-end interstate relocation with secure packing, insured transport and real-time move tracking.",
     externalUrl: "https://anshpackersmovers.com/domestic-shifting-services/",
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1200&auto=format&fit=crop",
+    image: "/domesticServices.webp",
     features: [
       "Interstate and long-distance relocation across India",
       "Secure, weatherproof packing for long transit",
@@ -108,8 +106,7 @@ export const services: Service[] = [
     description:
       "Dedicated office and corporate relocation solutions that minimise downtime and protect equipment and files.",
     externalUrl: "https://anshpackersmovers.com/corporate-relocation-services/",
-    image:
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop",
+    image: "/corporate.webp",
     features: [
       "Planned relocation around business working hours",
       "Safe packing of workstations, electronics and files",
@@ -129,8 +126,7 @@ export const services: Service[] = [
     description:
       "Reliable cross-border freight and relocation support with documentation assistance and secure cargo handling.",
     externalUrl: "https://anshpackersmovers.com/international-transportation/",
-    image:
-      "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?q=80&w=1200&auto=format&fit=crop",
+    image: "/internationalTransport.webp",
     features: [
       "Support for cross-border relocation and freight",
       "Assistance with shipping documentation",
@@ -150,8 +146,7 @@ export const services: Service[] = [
     description:
       "Damage-free car and bike transportation on covered carriers with GPS tracking and doorstep delivery.",
     externalUrl: "https://anshpackersmovers.com/car-bike-transportation/",
-    image:
-      "https://images.unsplash.com/photo-1601362840469-51e4d8d58785?q=80&w=1200&auto=format&fit=crop",
+    image: "/carBike.webp",
     features: [
       "Covered carriers to protect against weather and dust",
       "GPS-tracked vehicles for live location updates",
@@ -171,8 +166,7 @@ export const services: Service[] = [
     description:
       "Short and long-term secure storage with inventory management for household and commercial goods.",
     externalUrl: "https://anshpackersmovers.com/warehouse-service/",
-    image:
-      "https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=1200&auto=format&fit=crop",
+    image: "/WhereHouse.webp",
     features: [
       "Short-term and long-term secure storage",
       "Clean, monitored warehouse facilities",
@@ -791,7 +785,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "A practical checklist covering decluttering, labelling and scheduling so your move day goes smoothly.",
     image:
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1573269354259-8c108692afa1?q=80&w=1200&auto=format&fit=crop",
     content: [
       {
         heading: "Start with a plan, not boxes",
@@ -829,7 +823,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Learn the right materials and techniques to protect glassware, electronics and valuables during transit.",
     image:
-      "https://images.unsplash.com/photo-1609766857041-ed402ea8069a?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1630319325282-2c1c80116be0?q=80&w=1200&auto=format&fit=crop",
     content: [
       {
         heading: "Use the right materials",
@@ -865,7 +859,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Key questions to ask, documents to check and tips to choose a reliable relocation partner.",
     image:
-      "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1604087267213-40e35f1719a3?q=80&w=1200&auto=format&fit=crop",
     content: [
       {
         heading: "Get a clear, itemised estimate",

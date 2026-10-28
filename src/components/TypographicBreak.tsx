@@ -12,7 +12,7 @@ export default function TypographicBreak() {
               className="bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(rgba(11,31,51,0.35), rgba(11,31,51,0.35)), url('https://images.unsplash.com/photo-1600518464441-9154a4dea21b?q=80&w=1600&auto=format&fit=crop')",
+                  "linear-gradient(rgba(11,31,51,0.35), rgba(11,31,51,0.35)), url('/mainBanner.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "center 40%",
                 WebkitBackgroundClip: "text",

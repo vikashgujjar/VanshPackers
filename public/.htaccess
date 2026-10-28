@@ -1,0 +1,52 @@
+# Next.js 16's static export writes each route as "route.html" *and* a
+# same-named folder holding internal RSC cache files (__next.*, used for
+# client-side prefetching). Without this file, a request for a clean URL
+# like /services/local-household-shifting resolves to that folder instead
+# of the real local-household-shifting.html page, and — since the folder
+# has no index.html of its own — Apache shows a raw directory listing.
+
+# Never expose directory listings (belt-and-suspenders for the folder above).
+Options -Indexes
+
+# Don't let Apache auto-redirect a bare directory request to a trailing-slash
+# URL before our rewrite rules below get a chance to prefer the .html file.
+DirectorySlash Off
+
+RewriteEngine On
+RewriteBase /
+
+# 1. Serve files that exist on disk as-is (images, _next assets, robots.txt,
+#    sitemap.xml, favicon, etc.) without rewriting.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# 2. Normalize a trailing slash away first (e.g. /about/ -> /about) by
+#    restarting the rewrite with the stripped path, so rule 3 below only
+#    ever has to handle the no-slash form. Without this, a trailing-slash
+#    URL would make %{REQUEST_FILENAME}.html resolve to ".../about/.html"
+#    (not "about.html"), silently fail to match, and fall through to the
+#    bare RSC-cache folder, which Options -Indexes then reports as 403.
+RewriteRule ^(.+)/$ /$1 [L]
+
+# 3. Prefer "route.html" over the same-named RSC-cache folder.
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# 4. Homepage.
+RewriteRule ^$ index.html [L]
+
+# Anything left unmatched is a genuine 404; let Apache's normal "file not
+# found" handling take over and serve the static export's own 404 page.
+ErrorDocument 404 /404.html
+
+# Long-lived caching for hashed, immutable Next.js build assets.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>

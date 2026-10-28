@@ -28,8 +28,8 @@ export default function About({
             {/* ───────────── Photo panel ───────────── */}
             <div className="relative h-64 sm:h-80 lg:h-auto">
               <Image
-                src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1000&auto=format&fit=crop"
-                alt="Professional movers packing household items securely"
+                src="/AboutUsimage.webp"
+                alt="Freight truck at a logistics yard, ready for a professional relocation"
                 fill
                 loading="lazy"
                 sizes="(max-width: 1024px) 100vw, 45vw"
@@ -49,7 +49,7 @@ export default function About({
 
               {/* Photo caption, editorial-plate style */}
               <p className="absolute bottom-5 left-5 right-5 text-[12.5px] font-medium text-white/85">
-                Our crew wrapping and boxing a household move, Gurugram
+                Our fleet, ready for your next move
               </p>
             </div>
 
